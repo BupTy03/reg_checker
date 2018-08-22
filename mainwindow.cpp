@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->checkBox->setChecked(true);
+
+    highlighter = new RegExpHighlighter(this);
+    highlighter->setDocument(ui->SourceText->document());
+    highlighter->setPattern(ui->RegLineEdit->text());
 }
 
 MainWindow::~MainWindow()
@@ -72,4 +76,10 @@ void MainWindow::on_ReplaceBtn_clicked()
 
     ui->ReplaceTextBrowser->clear();
     ui->ReplaceTextBrowser->setPlainText((ui->SourceText->toPlainText()).replace(reg, ui->ReplaceLineEdit->text()));
+}
+
+void MainWindow::on_RegLineEdit_textChanged(const QString &arg1)
+{
+    highlighter->setPattern(arg1);
+    highlighter->rehighlight();
 }
